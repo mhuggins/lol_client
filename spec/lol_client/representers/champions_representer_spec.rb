@@ -17,7 +17,7 @@ describe LolClient::ChampionsRepresenter do
     end
 
     it 'contains the correct number of champions' do
-      expect(champions.size).to eq 116
+      expect(champions).to have(117).items
     end
   end
 end

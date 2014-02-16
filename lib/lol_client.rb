@@ -83,7 +83,7 @@ class LolClient
   # @param summoner_id [Fixnum] the player's summoner ID.
   # @return [Array] the list of {LeagueEntry} objects.
   def leagues(summoner_id)
-    url = url_for("#{region}/v2.3/league/by-summoner/#{summoner_id}/entry")
+    url = url_for("#{region}/v2.3/league/by-summoner/#{summoner_id}")
     get url, LeaguesRepresenter.new([])
   end
 

@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://prod.api.pvp.net/api/lol/na/v1.3/summoner/by-name/Finklebaum?api_key=<API_KEY>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Sat, 15 Feb 2014 22:41:10 GMT
+      Server:
+      - Jetty(9.1.0.v20131115)
+      Content-Length:
+      - '116'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"finklebaum":{"id":45444628,"name":"Finklebaum","profileIconId":6,"summonerLevel":30,"revisionDate":1392472370000}}'
+    http_version: 
+  recorded_at: Sat, 15 Feb 2014 22:41:11 GMT
+recorded_with: VCR 2.8.0

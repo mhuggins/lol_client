@@ -18,11 +18,8 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.cassette_library_dir = 'spec/fixtures/cassettes'
 
-  # Allow requests to be made when a cassette doesn't exist.
-  config.allow_http_connections_when_no_cassette = true
-
   # Ensure new requests are recorded.
-  config.default_cassette_options = { record: :once }
+  config.default_cassette_options = { record: :new_episodes }
 
   # Prevent sensitive information from being recorded to new cassettes.
   config.filter_sensitive_data('<API_KEY>') { ENV['API_KEY'] }

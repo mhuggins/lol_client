@@ -263,7 +263,7 @@ class LolClient
   #   "cooldownBurn", "effect", "effectBurn", "vars", "range", "rangeBurn",
   #   "key", and "modes".
   #
-  # @return [Hash] the {Static::Spell} objects, where each key is a string
+  # @return [Hash] the {Static::SummonerSpell} objects, where each key is a string
   #   representing the spell's id.
   #
 
@@ -272,7 +272,7 @@ class LolClient
     params = params_for(locale: locale, version: version, spellData: spell_data)
     url = url_for("static-data/#{region}/v1/summoner-spell", params)
 
-    get url, Static::SpellsRepresenter.new({})
+    get url, Static::SummonerSpellsRepresenter.new({})
   end
 
   ##
@@ -284,7 +284,7 @@ class LolClient
   # @param version [String] The version to use for spell data.
   # @param spell_data [String, Array] The data to include in the response.
   #
-  # @return [Static::Spell] the spell's data.
+  # @return [Static::SummonerSpell] the spell's data.
   #
 
   def static_spell(spell_id, locale: nil, version: nil, spell_data: nil)
@@ -292,7 +292,7 @@ class LolClient
     params = params_for(locale: locale, version: version, spellData: spell_data)
     url = url_for("static-data/#{region}/v1/summoner-spell/#{spell_id}", params)
 
-    get url, Static::SpellRepresenter.new(Static::Spell.new)
+    get url, Static::SummonerSpellRepresenter.new(Static::SummonerSpell.new)
   end
 
   private

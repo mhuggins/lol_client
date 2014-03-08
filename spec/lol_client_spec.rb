@@ -280,14 +280,14 @@ describe LolClient do
     let(:spells) { VCR.use_cassette('static_spells') { subject.static_spells(spell_data: 'all') } }
 
     it 'returns a hash of spells' do
-      expect(spells).to be_a_hash_of LolClient::Static::Spell
+      expect(spells).to be_a_hash_of LolClient::Static::SummonerSpell
     end
 
     it 'matches the response data' do
       expect(spells).to have(13).items
     end
 
-    it_behaves_like 'a static spell' do
+    it_behaves_like 'a static summoner spell' do
       let(:spell) { spells['SummonerBarrier'] }
     end
   end
@@ -296,6 +296,6 @@ describe LolClient do
     let(:spell) { VCR.use_cassette('static_spell') { subject.static_spell(spell_id, spell_data: 'all') } }
     let(:spell_id) { 'SummonerBarrier' }
 
-    it_behaves_like 'a static spell'
+    it_behaves_like 'a static summoner spell'
   end
 end

@@ -5,7 +5,7 @@ require 'lol_client/models/static/stats'
 require 'lol_client/models/static/passive'
 require 'lol_client/models/static/recommended'
 require 'lol_client/models/static/skin'
-require 'lol_client/models/static/spell'
+require 'lol_client/models/static/champion_spell'
 require 'lol_client/models/static/stats'
 require 'lol_client/representers/static/image_representer'
 require 'lol_client/representers/static/info_representer'
@@ -13,7 +13,7 @@ require 'lol_client/representers/static/stats_representer'
 require 'lol_client/representers/static/passive_representer'
 require 'lol_client/representers/static/recommended_representer'
 require 'lol_client/representers/static/skin_representer'
-require 'lol_client/representers/static/spell_representer'
+require 'lol_client/representers/static/champion_spell_representer'
 require 'lol_client/representers/static/stats_representer'
 
 class LolClient
@@ -38,7 +38,7 @@ class LolClient
       collection :enemy_tips, as: :enemytips #, class: String
       collection :recommended, extend: Static::RecommendedRepresenter, class: Static::Recommended
       collection :skins, extend: Static::SkinRepresenter, class: Static::Skin
-      collection :spells, extend: Static::SpellRepresenter, class: Static::Spell
+      collection :spells, extend: Static::ChampionSpellRepresenter, class: Static::ChampionSpell
     end
   end
 end

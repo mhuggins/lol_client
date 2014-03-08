@@ -8,7 +8,7 @@ require 'lol_client/representers/static/spell_vars_representer'
 
 class LolClient
   module Static
-    class SpellRepresenter < Representable::Decorator
+    class ChampionSpellRepresenter < Representable::Decorator
       include Representable::JSON
 
       property :id

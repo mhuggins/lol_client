@@ -13,7 +13,7 @@ describe LolClient::ChampionsRepresenter do
     end
 
     it 'contains champions' do
-      expect(champions.map(&:class).uniq).to eq [LolClient::Champion]
+      expect(champions).to be_an_array_of LolClient::Champion
     end
 
     it 'contains the correct number of champions' do

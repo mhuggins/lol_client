@@ -13,7 +13,7 @@ class LolClient
     property :type, as: :gameType
     property :sub_type, as: :subType
     property :team_id, as: :teamId
-    property :created_at, as: :createDate
+    property :created_at, as: :createDate, decorator_scope: true
     property :invalid
     property :level
     property :map_id, as: :mapId
@@ -23,5 +23,13 @@ class LolClient
     property :raw_stats, as: :stats, extend: RawStatsRepresenter, class: RawStats
 
     collection :fellow_players, as: :fellowPlayers, extend: PlayerRepresenter, class: Player
+
+    def created_at
+      represented.created_at.to_i * 1000
+    end
+
+    def created_at=(val)
+      represented.created_at = Time.at(val / 1000)
+    end
   end
 end

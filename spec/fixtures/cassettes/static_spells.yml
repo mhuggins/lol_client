@@ -1,0 +1,90 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://prod.api.pvp.net/api/lol/static-data/na/v1/summoner-spell?api_key=<API_KEY>&spellData=all
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Mar 2014 18:27:17 GMT
+      Server:
+      - Jetty(9.1.1.v20140108)
+      Vary:
+      - Accept-Encoding, User-Agent
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+    http_version: 
+  recorded_at: Sat, 08 Mar 2014 18:27:17 GMT
+recorded_with: VCR 2.8.0

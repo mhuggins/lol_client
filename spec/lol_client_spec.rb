@@ -25,8 +25,7 @@ describe LolClient do
     let(:champions) { VCR.use_cassette('champions') { subject.champions } }
 
     it 'returns an array of champions' do
-      expect(champions).to be_an Array
-      expect(champions.map(&:class).uniq).to eq [LolClient::Champion]
+      expect(champions).to be_an_array_of LolClient::Champion
     end
 
     it 'matches the response data' do
@@ -53,8 +52,7 @@ describe LolClient do
     let(:summoner_id) { 45444628 }
 
     it 'returns an array of games' do
-      expect(recent_games).to be_an Array
-      expect(recent_games.map(&:class).uniq).to eq [LolClient::Game]
+      expect(recent_games).to be_an_array_of LolClient::Game
     end
 
     it 'matches the response data' do
@@ -75,8 +73,7 @@ describe LolClient do
       expect(most_recent_game.spell1).to eq 4
       expect(most_recent_game.spell2).to eq 12
       expect(most_recent_game.raw_stats).to be_a LolClient::RawStats
-      expect(most_recent_game.fellow_players).to be_an Array
-      expect(most_recent_game.fellow_players.map(&:class).uniq).to eq [LolClient::Player]
+      expect(most_recent_game.fellow_players).to be_an_array_of LolClient::Player
     end
   end
 
@@ -95,21 +92,17 @@ describe LolClient do
 
       entries = league.entries
 
-      expect(entries).to be_an Array
+      expect(entries).to be_an_array_of LolClient::LeagueEntry
       expect(entries).to have(200).items
-      expect(entries.map(&:class).uniq).to eq [LolClient::LeagueEntry]
     end
   end
-
-  ######################################################
 
   describe '#league_entries' do
     let(:league_entries) { VCR.use_cassette('league_entries') { subject.league_entries(summoner_id) } }
     let(:summoner_id) { 45444628 }
 
     it 'returns an array of league entries' do
-      expect(league_entries).to be_an Array
-      expect(league_entries.map(&:class).uniq).to eq [LolClient::LeagueEntry]
+      expect(league_entries).to be_an_array_of LolClient::LeagueEntry
     end
 
     it 'matches the response data' do
@@ -136,8 +129,7 @@ describe LolClient do
     let(:summoner_id) { 45444628 }
 
     it 'returns an array of leagues' do
-      expect(leagues).to be_an Array
-      expect(leagues.map(&:class).uniq).to eq [LolClient::League]
+      expect(leagues).to be_an_array_of LolClient::League
     end
 
     it 'matches the response data' do
@@ -150,9 +142,8 @@ describe LolClient do
       expect(league.queue).to eq 'RANKED_SOLO_5x5'
       expect(league.tier).to eq 'BRONZE'
 
-      expect(league.entries).to be_an Array
+      expect(league.entries).to be_an_array_of LolClient::LeagueEntry
       expect(league.entries).to have(200).items
-      expect(league.entries.map(&:class).uniq).to eq [LolClient::LeagueEntry]
     end
   end
 
@@ -161,8 +152,7 @@ describe LolClient do
     let(:summoner_ids) { %w[45444628 49411514] }
 
     it 'returns a hash of summoners' do
-      expect(summoners).to be_a Hash
-      expect(summoners.values.map(&:class).uniq).to eq [LolClient::Summoner]
+      expect(summoners).to be_a_hash_of LolClient::Summoner
     end
 
     it 'matches the response data' do
@@ -201,8 +191,7 @@ describe LolClient do
     let(:summoner_names) { %w[Finklebaum fartmouth] }
 
     it 'returns a hash of summoners' do
-      expect(summoners).to be_a Hash
-      expect(summoners.values.map(&:class).uniq).to eq [LolClient::Summoner]
+      expect(summoners).to be_a_hash_of LolClient::Summoner
     end
 
     it 'matches the response data' do
@@ -241,8 +230,7 @@ describe LolClient do
     let(:summoner_ids) { [45444628, 49411514] }
 
     it 'returns a hash of strings' do
-      expect(summoner_names).to be_a Hash
-      expect(summoner_names.values.map(&:class).uniq).to eq [String]
+      expect(summoner_names).to be_a_hash_of String
     end
 
     it 'matches the response data' do
@@ -263,5 +251,51 @@ describe LolClient do
     it 'matches the response data' do
       expect(summoner_name).to eq 'Finklebaum'
     end
+  end
+
+  describe '#static_champions' do
+    let(:champions) { VCR.use_cassette('static_champions') { subject.static_champions(champ_data: 'all') } }
+
+    it 'returns a hash of champions' do
+      expect(champions).to be_a_hash_of LolClient::Static::Champion
+    end
+
+    it 'matches the response data' do
+      expect(champions).to have(118).items
+    end
+
+    it_behaves_like 'a static champion' do
+      let(:champion) { champions['Annie'] }
+    end
+  end
+
+  describe '#static_champion' do
+    let(:champion) { VCR.use_cassette('static_champion') { subject.static_champion(champion_id, champ_data: 'all') } }
+    let(:champion_id) { 1 }
+
+    it_behaves_like 'a static champion'
+  end
+
+  describe '#static_spells' do
+    let(:spells) { VCR.use_cassette('static_spells') { subject.static_spells(spell_data: 'all') } }
+
+    it 'returns a hash of spells' do
+      expect(spells).to be_a_hash_of LolClient::Static::Spell
+    end
+
+    it 'matches the response data' do
+      expect(spells).to have(13).items
+    end
+
+    it_behaves_like 'a static spell' do
+      let(:spell) { spells['SummonerBarrier'] }
+    end
+  end
+
+  describe '#static_spell' do
+    let(:spell) { VCR.use_cassette('static_spell') { subject.static_spell(spell_id, spell_data: 'all') } }
+    let(:spell_id) { 'SummonerBarrier' }
+
+    it_behaves_like 'a static spell'
   end
 end

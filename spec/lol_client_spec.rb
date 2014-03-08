@@ -65,7 +65,7 @@ describe LolClient do
       expect(most_recent_game.type).to eq 'MATCHED_GAME'
       expect(most_recent_game.sub_type).to eq 'RANKED_SOLO_5x5'
       expect(most_recent_game.team_id).to eq 200
-      expect(most_recent_game.created_at).to eq 1392436670767
+      expect(most_recent_game.created_at).to eq Time.new(2014, 2, 15, 3, 57, 50, 0)
       expect(most_recent_game.invalid).to be_false
       expect(most_recent_game.level).to eq 30
       expect(most_recent_game.map_id).to eq 1

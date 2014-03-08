@@ -156,6 +156,42 @@ class LolClient
     summoner_names(summoner_id)[summoner_id]
   end
 
+  # TODO documentation & testing
+  def static_champions(locale: nil, version: nil, champ_data: nil)
+    champ_data = champ_data.join(',') if champ_data.is_a?(Array)
+    params = { locale: locale, version: version, champData: champ_data }
+    url = url_for("static-data/#{region}/v1/champion", params)
+
+    get url, Static::ChampionsRepresenter.new({})
+  end
+
+  # TODO documentation & testing
+  def static_champion(champion_id, locale: nil, version: nil, champ_data: nil)
+    champ_data = champ_data.join(',') if champ_data.is_a?(Array)
+    params = { locale: locale, version: version, champData: champ_data }
+    url = url_for("static-data/#{region}/v1/champion/#{champion_id}", params)
+
+    get url, Static::ChampionRepresenter.new(Static::Champion.new)
+  end
+
+  # TODO documentation & testing
+  def static_spells(locale: nil, version: nil, summoner_data: nil)
+    summoner_data = summoner_data.join(',') if summoner_data.is_a?(Array)
+    params = { locale: locale, version: version, summonerData: summoner_data }
+    url = url_for("static-data/#{region}/v1/summoner-spell", params)
+
+    get url, Static::SpellsRepresenter.new({})
+  end
+
+  # TODO documentation & testing
+  def static_spell(spell_id, locale: nil, version: nil, spell_data: nil)
+    spell_data = spell_data.join(',') if spell_data.is_a?(Array)
+    params = { locale: locale, version: version, spellData: spell_data }
+    url = url_for("static-data/#{region}/v1/summoner-spell/#{spell_id}", params)
+
+    get url, Static::SpellRepresenter.new(Static::Spell.new)
+  end
+
   private
 
   attr_reader :api_key

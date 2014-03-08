@@ -235,4 +235,33 @@ describe LolClient do
       expect(summoner.revised_at).to eq Time.at(1392472370)
     end
   end
+
+  describe '#summoner_names' do
+    let(:summoner_names) { VCR.use_cassette('summoner_names') { subject.summoner_names(summoner_ids) } }
+    let(:summoner_ids) { [45444628, 49411514] }
+
+    it 'returns a hash of strings' do
+      expect(summoner_names).to be_a Hash
+      expect(summoner_names.values.map(&:class).uniq).to eq [String]
+    end
+
+    it 'matches the response data' do
+      expect(summoner_names).to have(2).items
+      expect(summoner_names['45444628']).to eq 'Finklebaum'
+      expect(summoner_names['49411514']).to eq 'fartmouth'
+    end
+  end
+
+  describe '#summoner_name' do
+    let(:summoner_name) { VCR.use_cassette('summoner_name') { subject.summoner_name(summoner_id) } }
+    let(:summoner_id) { 45444628 }
+
+    it 'returns a string' do
+      expect(summoner_name).to be_a String
+    end
+
+    it 'matches the response data' do
+      expect(summoner_name).to eq 'Finklebaum'
+    end
+  end
 end

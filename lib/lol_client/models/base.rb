@@ -2,19 +2,25 @@ require 'set'
 
 class LolClient
   class ModelBase
+    ##
     # Instantiates a new model instance.
     #
-    # @param attributes [Hash] attributes to initialize on this model.
+    # @param attributes [Hash] Attributes to initialize on this model.
+    #
+
     def initialize(attributes = {})
       attributes.each do |key, value|
         public_send("#{key}=", value)
       end
     end
 
+    ##
     # Checks if another object is equal to this object.
     #
-    # @param obj [Object] an object to compare against.
-    # @return [TrueClass, FalseClass] whether or not the objects are equivalent.
+    # @param obj [Object] An object to compare against.
+    # @return [Boolean] Whether or not the objects are equivalent.
+    #
+
     def ==(obj)
       obj.class == self.class && self.class.defined_attributes.all? { |attr| obj.public_send(attr) == public_send(attr) }
     end

@@ -11,14 +11,20 @@ class LolClient
   REGIONS = [:br, :eune, :euw, :kr, :lan, :las, :na, :oce, :ru, :tr].to_set.freeze
   CHALLENGER_LEAGUE_TYPES = [:RANKED_SOLO_5x5, :RANKED_TEAM_3x3, :RANKED_TEAM_5x5].to_set.freeze
 
+  ##
+  # Stores the region associated with the client.
+  #
+  # @return [Symbol] The region associated with the client.
+  #
+
   attr_reader :region
 
   ##
   # Instantiates a new League of Legends REST API client.
   #
-  # @param api_key [String] your private API key generated from
+  # @param api_key [String] Your private API key generated from
   #   {https://developer.riotgames.com/ Riot Games API}.
-  # @param region [Symbol] the region this client is associated with.  Must be
+  # @param region [Symbol] The region this client is associated with.  Must be
   #   one of the values defined in {REGIONS}.
   #
 
@@ -33,7 +39,7 @@ class LolClient
   ##
   # Returns a string containing a human-readable representation of this object.
   #
-  # @return [String] the human-readable representation of this object.
+  # @return [String] The human-readable representation of this object.
   #
 
   def inspect
@@ -47,7 +53,7 @@ class LolClient
   ##
   # Retrieves all champions.
   #
-  # @return [Array] the list of {Champion} objects.
+  # @return [Array] The list of {Champion} objects.
   #
 
   def champions
@@ -58,9 +64,9 @@ class LolClient
   ##
   # Retrieves recent games for a summoner.
   #
-  # @param summoner_id [Fixnum] the player's summoner ID.
+  # @param summoner_id [Fixnum] The player's summoner ID.
   #
-  # @return [Array] the list of {Game} objects.
+  # @return [Array] The list of {Game} objects.
   #
 
   def recent_games(summoner_id)
@@ -71,10 +77,10 @@ class LolClient
   ##
   # Retrieves challenger tier leagues.
   #
-  # @param type [Symbol] the type of league to retrieve.  Must be one of the
+  # @param type [Symbol] The type of league to retrieve.  Must be one of the
   #   values defined in {CHALLENGER_LEAGUE_TYPES}.
   #
-  # @return [League] the challenger league.
+  # @return [League] The challenger league.
   #
 
   def challenger_league(type)
@@ -88,9 +94,9 @@ class LolClient
   # Retrieves league entries data for a summoner, including league entries for
   # all of the summoner's teams.
   #
-  # @param summoner_id [Fixnum] the player's summoner ID.
+  # @param summoner_id [Fixnum] The player's summoner ID.
   #
-  # @return [Array] the list of {LeagueEntry} objects.
+  # @return [Array] The list of {LeagueEntry} objects.
   #
 
   def league_entries(summoner_id)
@@ -102,9 +108,9 @@ class LolClient
   # Retrieves leagues data for a summoner, including leagues for all of the
   # summoner's teams.
   #
-  # @param summoner_id [Fixnum] the player's summoner ID.
+  # @param summoner_id [Fixnum] The player's summoner ID.
   #
-  # @return [Array] the list of {LeagueEntry} objects.
+  # @return [Array] The list of {LeagueEntry} objects.
   #
 
   def leagues(summoner_id)
@@ -115,9 +121,9 @@ class LolClient
   ##
   # Retrieves summoner data for one or more summoners.
   #
-  # @param summoner_ids [Array, String, Fixnum] one or more summoner IDs.
+  # @param summoner_ids [Array, String, Fixnum] One or more summoner IDs.
   #
-  # @return [Hash] the {Summoner} objects, where each key is a string
+  # @return [Hash] The {Summoner} objects, where each key is a string
   #   representing a requested summoner ID.
   #
 
@@ -130,9 +136,9 @@ class LolClient
   ##
   # Retrieves summoner data for a single summoner.
   #
-  # @param summoner_id [Fixnum] the player's summoner ID.
+  # @param summoner_id [Fixnum] The player's summoner ID.
   #
-  # @return [Summoner] the summoner's data.
+  # @return [Summoner] The summoner's data.
   #
 
   def summoner(summoner_id)
@@ -146,9 +152,9 @@ class LolClient
   ##
   # Retrieves summoner data for one or more summoners.
   #
-  # @param summoner_names [Array, String] one or more summoner names.
+  # @param summoner_names [Array, String] One or more summoner names.
   #
-  # @return [Array] the {Summoner} objects, where each key is a string
+  # @return [Array] The {Summoner} objects, where each key is a string
   #   representing a requested lower-case summoner name.
   #
 
@@ -161,9 +167,9 @@ class LolClient
   ##
   # Retrieves summoner data for a single summoner.
   #
-  # @param summoner_name [String] the player's summoner name.
+  # @param summoner_name [String] The player's summoner name.
   #
-  # @return [Summoner] the summoner's data.
+  # @return [Summoner] The summoner's data.
   #
 
   def summoner_by_name(summoner_name)
@@ -177,9 +183,9 @@ class LolClient
   ##
   # Retrieves summoner names for one or more summoners.
   #
-  # @param summoner_ids [Array, String, Fixnum] one or more summoner IDs.
+  # @param summoner_ids [Array, String, Fixnum] One or more summoner IDs.
   #
-  # @return [Hash] the summoner names, where each key is a string representing
+  # @return [Hash] The summoner names, where each key is a string representing
   #   a requested summoner ID.
   #
 
@@ -192,9 +198,9 @@ class LolClient
   ##
   # Retrieves summoner name for a single summoner.
   #
-  # @param summoner_id [Fixnum] the player's summoner ID.
+  # @param summoner_id [Fixnum] The player's summoner ID.
   #
-  # @return [Summoner] the summoner's data.
+  # @return [Summoner] The summoner's data.
   #
 
   def summoner_name(summoner_id)
@@ -216,7 +222,7 @@ class LolClient
   #   "allytips", "enemytips", "tags", "partype", "info", "stats", "spells",
   #   "passive", and "recommended".
   #
-  # @return [Hash] the {Static::Champion} objects, where each key is a string
+  # @return [Hash] The {Static::Champion} objects, where each key is a string
   #   representing the champion's id.
   #
 
@@ -240,7 +246,7 @@ class LolClient
   #   "allytips", "enemytips", "tags", "partype", "info", "stats", "spells",
   #   "passive", and "recommended".
   #
-  # @return [Static::Champion] the champion's data.
+  # @return [Static::Champion] The champion's data.
   #
 
   def static_champion(champion_id, locale: nil, version: nil, champ_data: nil)
@@ -263,7 +269,7 @@ class LolClient
   #   "cooldownBurn", "effect", "effectBurn", "vars", "range", "rangeBurn",
   #   "key", and "modes".
   #
-  # @return [Hash] the {Static::SummonerSpell} objects, where each key is a string
+  # @return [Hash] The {Static::SummonerSpell} objects, where each key is a string
   #   representing the spell's id.
   #
 
@@ -284,7 +290,7 @@ class LolClient
   # @param version [String] The version to use for spell data.
   # @param spell_data [String, Array] The data to include in the response.
   #
-  # @return [Static::SummonerSpell] the spell's data.
+  # @return [Static::SummonerSpell] The spell's data.
   #
 
   def static_spell(spell_id, locale: nil, version: nil, spell_data: nil)

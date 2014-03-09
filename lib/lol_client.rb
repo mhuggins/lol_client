@@ -258,6 +258,52 @@ class LolClient
   end
 
   ##
+  # Retrieves info for all items.
+  #
+  # @param locale [String] The locale to use for item data (e.g.: "en_US"
+  #   or "es_ES").
+  # @param version [String] The version to use for item data.
+  # @param item_data [String, Array] The data to include in the response.
+  #   Allowed values include: "all", "gold", "calloq", "consumed", "stacks",
+  #   "depth", "consumeOnFull", "from", "into", "specialRecipe", "inStore",
+  #   "hideFromAll", "requiredChampion", "tags", "maps", "image", and "stats".
+  #
+  # @return [Hash] The {Static::Item} objects, where each key is a string
+  #   representing the item's id.
+  #
+
+  def static_items(locale: nil, version: nil, item_data: nil)
+    item_data = array_options(item_data).join(',')
+    params = params_for(locale: locale, version: version, itemListData: item_data)
+    url = url_for("static-data/#{region}/v1/item", params)
+
+    get url, Static::ItemsRepresenter.new({})
+  end
+
+  ##
+  # Retrieves info for a specific item.
+  #
+  # @param item_id [Fixnum] The item's ID.
+  # @param locale [String] The locale to use for item data (e.g.: "en_US"
+  #   or "es_ES").
+  # @param version [String] The version to use for item data.
+  # @param item_data [String, Array] The data to include in the response.
+  #   Allowed values include: "all", "gold", "calloq", "consumed", "stacks",
+  #   "depth", "consumeOnFull", "from", "into", "specialRecipe", "inStore",
+  #   "hideFromAll", "requiredChampion", "tags", "maps", "image", and "stats".
+  #
+  # @return [Static::Item] The item's data.
+  #
+
+  def static_item(item_id, locale: nil, version: nil, item_data: nil)
+    item_data = array_options(item_data).join(',')
+    params = params_for(locale: locale, version: version, itemData: item_data)
+    url = url_for("static-data/#{region}/v1/champion/#{item_id}", params)
+
+    get url, Static::ItemRepresenter.new(Static::Item.new)
+  end
+
+  ##
   # Retrieves info for all summoner spells.
   #
   # @param locale [String] The locale to use for spell data (e.g.: "en_US"

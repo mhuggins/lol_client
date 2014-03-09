@@ -14,7 +14,7 @@ class LolClient
       property :title
       property :type
 
-      collection :blocks, extend: Static::BlockRepresenter, class: Static::Block
+      collection :blocks, extend: BlockRepresenter, class: Block
     end
   end
 end

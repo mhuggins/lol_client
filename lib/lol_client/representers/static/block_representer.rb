@@ -9,7 +9,7 @@ class LolClient
 
       property :type
 
-      collection :items, extend: Static::BlockItemRepresenter, class: Static::BlockItem
+      collection :items, extend: BlockItemRepresenter, class: BlockItem
     end
   end
 end

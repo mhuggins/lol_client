@@ -9,7 +9,7 @@ class LolClient
 
       property :name
       property :description
-      property :image, extend: Static::ImageRepresenter, class: Static::Image
+      property :image, extend: ImageRepresenter, class: Image
     end
   end
 end

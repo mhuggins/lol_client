@@ -276,6 +276,14 @@ describe LolClient do
     it_behaves_like 'a static champion'
   end
 
+  describe '#static_items' do
+    pending
+  end
+
+  describe '#static_item' do
+    pending
+  end
+
   describe '#static_spells' do
     let(:spells) { VCR.use_cassette('static_spells') { subject.static_spells(spell_data: 'all') } }
 

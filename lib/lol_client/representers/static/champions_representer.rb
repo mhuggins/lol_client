@@ -9,7 +9,7 @@ class LolClient
 
       self.representation_wrap = :data
 
-      values extend: Static::ChampionRepresenter, class: Static::Champion
+      values extend: ChampionRepresenter, class: Champion
     end
   end
 end

@@ -16,9 +16,9 @@ class LolClient
       property :cost_burn, as: :costBurn
       property :cost_type, as: :costType
       property :description
-      property :image, extend: Static::ImageRepresenter, class: Static::Image
+      property :image, extend: ImageRepresenter, class: Image
       property :key
-      property :level_tip, as: :leveltip, extend: Static::LevelTipRepresenter, class: Static::LevelTip
+      property :level_tip, as: :leveltip, extend: LevelTipRepresenter, class: LevelTip
       property :max_rank, as: :maxrank
       property :name
       property :range
@@ -32,7 +32,7 @@ class LolClient
       collection :effect
       collection :effect_burn, as: :effectBurn
       collection :modes
-      collection :vars, extend: Static::SpellVarsRepresenter, class: Static::SpellVars
+      collection :vars, extend: SpellVarsRepresenter, class: SpellVars
     end
   end
 end

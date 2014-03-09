@@ -2,7 +2,7 @@ require 'representable/json'
 
 class LolClient
   module Static
-    class StatsRepresenter < Representable::Decorator
+    class ChampionStatsRepresenter < Representable::Decorator
       include Representable::JSON
 
       property :armor

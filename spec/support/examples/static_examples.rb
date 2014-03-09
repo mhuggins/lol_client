@@ -18,7 +18,7 @@ shared_examples_for 'a static champion' do
     expect(champion.recommended).to be_an_array_of LolClient::Static::Recommended
     expect(champion.skins).to be_an_array_of LolClient::Static::Skin
     expect(champion.spells).to be_an_array_of LolClient::Static::ChampionSpell
-    expect(champion.stats).to be_a LolClient::Static::Stats
+    expect(champion.stats).to be_a LolClient::Static::ChampionStats
     expect(champion.tags).to be_an_array_of String
     expect(champion.title).to be_a String
   end

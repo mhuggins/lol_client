@@ -9,7 +9,7 @@ class LolClient
 
       self.representation_wrap = :data
 
-      values extend: Static::SummonerSpellRepresenter, class: Static::SummonerSpell
+      values extend: SummonerSpellRepresenter, class: SummonerSpell
     end
   end
 end

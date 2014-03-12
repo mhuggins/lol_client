@@ -277,11 +277,72 @@ describe LolClient do
   end
 
   describe '#static_items' do
-    pending
+    let(:items) { VCR.use_cassette('static_items') { subject.static_items(item_data: 'all') } }
+
+    it 'returns a hash of items' do
+      expect(items).to be_a_hash_of LolClient::Static::Item
+    end
+
+    it 'matches the response data' do
+      expect(items).to have(216).items
+    end
+
+    it_behaves_like 'a static item' do
+      let(:item) { items['2009'] }
+    end
   end
 
   describe '#static_item' do
-    pending
+    let(:item) { VCR.use_cassette('static_item') { subject.static_item(item_id, item_data: 'all') } }
+    let(:item_id) { 2009 }
+
+    it_behaves_like 'a static item'
+  end
+
+  describe '#static_masteries' do
+    let(:masteries) { VCR.use_cassette('static_masteries') { subject.static_masteries(mastery_data: 'all') } }
+
+    it 'returns a hash of masteries' do
+      expect(masteries).to be_a_hash_of LolClient::Static::Mastery
+    end
+
+    it 'matches the response data' do
+      expect(masteries).to have(57).items
+    end
+
+    it_behaves_like 'a static mastery' do
+      let(:mastery) { masteries['4353'] }
+    end
+  end
+
+  describe '#static_mastery' do
+    let(:mastery) { VCR.use_cassette('static_mastery') { subject.static_mastery(mastery_id, mastery_data: 'all') } }
+    let(:mastery_id) { 4353 }
+
+    it_behaves_like 'a static mastery'
+  end
+
+  describe '#static_runes' do
+    let(:runes) { VCR.use_cassette('static_runes') { subject.static_runes(rune_data: 'all') } }
+
+    it 'returns a hash of runes' do
+      expect(runes).to be_a_hash_of LolClient::Static::Rune
+    end
+
+    it 'matches the response data' do
+      expect(runes).to have(296).items
+    end
+
+    it_behaves_like 'a static rune' do
+      let(:rune) { runes['5235'] }
+    end
+  end
+
+  describe '#static_rune' do
+    let(:rune) { VCR.use_cassette('static_rune') { subject.static_rune(rune_id, rune_data: 'all') } }
+    let(:rune_id) { 5235 }
+
+    it_behaves_like 'a static rune'
   end
 
   describe '#static_spells' do

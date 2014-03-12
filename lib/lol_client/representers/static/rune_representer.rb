@@ -10,25 +10,23 @@ require 'lol_client/representers/static/meta_data_representer'
 
 class LolClient
   module Static
-    class ItemRepresenter < Representable::Decorator
+    class RuneRepresenter < Representable::Decorator
       include Representable::JSON
 
       property :colloq
-      property :consume_on_full
+      property :consume_on_full, as: :consumeOnFull
       property :consumed
       property :depth
       property :description
       property :gold, extend: GoldRepresenter, class: Gold
       property :group
-      property :hide_from_all
+      property :hide_from_all, as: :hideFromAll
       property :image, extend: ImageRepresenter, class: Image
-      property :in_store
-      property :maps
       property :name
-      property :plain_text
-      property :required_champion
+      property :plain_text, as: :plaintext
+      property :required_champion, as: :requiredChampion
       property :rune, extend: MetaDataRepresenter, class: MetaData
-      property :special_recipe
+      property :special_recipe, as: :specialRecipe
       property :stacks
       property :stats, extend: BasicDataStatsRepresenter, class: BasicDataStats
 

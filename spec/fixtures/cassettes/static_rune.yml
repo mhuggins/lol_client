@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://prod.api.pvp.net/api/lol/static-data/na/v1/rune/5235?api_key=<API_KEY>&runeData=all
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 12 Mar 2014 00:32:34 GMT
+      Server:
+      - Jetty(9.1.1.v20140108)
+      Vary:
+      - Accept-Encoding, User-Agent
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAE2PS0/DMBCE/0o0V6wK2oBa35AQt0rAFaHKTTdhhWsbP1Si
+        Kv+ddZRDT/v6NDN7hTNngsZ7YZcpJXIdNb5vno9sOY/Nm79QhMKJUhc5ZPZO
+        6LvNavvYmIUJC5PNkKA/cTYDdzL31mQpvzfS+FJguYvlFX2xVsSO9rA5rFfB
+        DQKnEDnXQLE4ul+WQ/QlLDsZ/6B3Twoj9EPbKlyg263Cdy2TKGSTU5V/Fft9
+        jfJiquPen6BrbmFmIUE4fcxdjoUkP8sbGuv6yhhojma6H0zTPyPOSu0nAQAA
+    http_version: 
+  recorded_at: Wed, 12 Mar 2014 00:32:34 GMT
+recorded_with: VCR 2.8.0

@@ -2,7 +2,7 @@ require 'representable/json'
 
 class LolClient
   module Static
-    class ItemStatsRepresenter < Representable::Decorator
+    class BasicDataStatsRepresenter < Representable::Decorator
       include Representable::JSON
 
       property :flat_armor_mod, as: :FlatArmorMod

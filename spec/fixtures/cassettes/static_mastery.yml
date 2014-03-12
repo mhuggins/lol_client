@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://prod.api.pvp.net/api/lol/static-data/na/v1/mastery/4353?api_key=<API_KEY>&masteryData=all
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 12 Mar 2014 00:29:29 GMT
+      Server:
+      - Jetty(9.1.1.v20140108)
+      Vary:
+      - Accept-Encoding, User-Agent
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAK2RwWrDMBBEf2VZ8CkiuLFDi26lp1x7LSUo1kYRkSVVkpuY
+        kH/Pqrh/kNOyM8MsvL2h1Sj7btsJ9GoklLjzhZyzhvxAKFBTHpKNxQaP8gtX
+        mwY+QnA6XDx8kp6G6oDyGlLdKEM5EQz/kXCEd478qkIadoXGDIcZ+oabV916
+        +4yy17+yp1S9tA1+C0zKnzNKZhITJfphKi3fsKMyTOiGx8k51iq2dfSGrRyT
+        LZXeqHKhNLeLblKYIssmqXm/eCxfUW76VuC8zAv/4E3gqY77/QGI1kvglQEA
+        AA==
+    http_version: 
+  recorded_at: Wed, 12 Mar 2014 00:29:29 GMT
+recorded_with: VCR 2.8.0

@@ -2,7 +2,7 @@ require 'lol_client/models/base'
 
 class LolClient
   module Static
-    class ItemStats < ModelBase
+    class BasicDataStats < ModelBase
       attributes :flat_armor_mod, :flat_attack_speed_mod, :flat_block_mod, :flat_crit_chance_mod,
                  :flat_crit_damage_mod, :flat_exp_bonus, :flat_energy_pool_mod, :flat_energy_regen_mod,
                  :flat_hp_pool_mod, :flat_hp_regen_mod, :flat_mp_pool_mod, :flat_mp_regen_mod,

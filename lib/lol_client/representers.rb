@@ -1,3 +1,4 @@
+require 'lol_client/representers/basic_data_representable'
 require 'lol_client/representers/champion_representer'
 require 'lol_client/representers/champions_representer'
 require 'lol_client/representers/game_representer'

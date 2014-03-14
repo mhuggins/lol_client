@@ -1,15 +1,17 @@
-require 'representable/json/hash'
+require 'representable/json'
 require 'lol_client/models/static/item'
+require 'lol_client/representers/basic_data_representable'
 require 'lol_client/representers/static/item_representer'
 
 class LolClient
   module Static
     class ItemsRepresenter < Representable::Decorator
-      include Representable::JSON::Hash
+      include Representable::JSON
+      include BasicDataRepresentable
 
-      self.representation_wrap = :data
+      property :basic, extend: ItemRepresenter, class: Item
 
-      values extend: ItemRepresenter, class: Item
+      hash :data, extend: ItemRepresenter, class: Item
     end
   end
 end

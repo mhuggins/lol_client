@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'securerandom'
 
 describe LolClient do
-  subject { described_class.new(api_key, region) }
+  subject { described_class.new(api_key, region: region) }
 
   let(:api_key) { ENV['API_KEY'] || SecureRandom.hex }
   let(:region) { :na }
@@ -254,7 +254,7 @@ describe LolClient do
   end
 
   describe '#static_champions' do
-    let(:champions) { VCR.use_cassette('static_champions') { subject.static_champions(champ_data: 'all') } }
+    let(:champions) { VCR.use_cassette('static_champions') { subject.static_champions(data: 'all') } }
 
     it 'returns a hash of champions' do
       expect(champions).to be_a_hash_of LolClient::Static::Champion
@@ -270,14 +270,14 @@ describe LolClient do
   end
 
   describe '#static_champion' do
-    let(:champion) { VCR.use_cassette('static_champion') { subject.static_champion(champion_id, champ_data: 'all') } }
+    let(:champion) { VCR.use_cassette('static_champion') { subject.static_champion(champion_id, data: 'all') } }
     let(:champion_id) { 1 }
 
     it_behaves_like 'a static champion'
   end
 
   describe '#static_items' do
-    let(:items) { VCR.use_cassette('static_items') { subject.static_items(item_data: 'all') } }
+    let(:items) { VCR.use_cassette('static_items') { subject.static_items(data: 'all') } }
 
     it 'returns a hash of items' do
       expect(items).to be_a_hash_of LolClient::Static::Item
@@ -287,20 +287,67 @@ describe LolClient do
       expect(items).to have(216).items
     end
 
-    it_behaves_like 'a static item' do
-      let(:item) { items['2009'] }
+    it 'matches the response data' do
+      item = items['2009']
+      expect(item.colloq).to eq ';'
+      expect(item.consume_on_full).to be_nil
+      expect(item.consumed).to be_true
+      expect(item.depth).to eq 1
+      expect(item.description).to eq '<consumable>Click to Consume:</consumable> Restores 80 Health and 50 Mana over 10 seconds.'
+      expect(item.from).to be_nil
+      expect(item.gold).to be_a LolClient::Static::Gold
+      expect(item.group).to be_nil
+      expect(item.hide_from_all).to be_nil
+      expect(item.image).to be_a LolClient::Static::Image
+      expect(item.in_store).to be_nil
+      expect(item.into).to be_nil
+      expect(item.maps).to eq({ '10' => true, '1' => true, '8' => true, '12' => true })
+      expect(item.name).to eq 'Total Biscuit of Rejuvenation'
+      expect(item.plain_text).to be_nil
+      expect(item.required_champion).to be_nil
+      expect(item.rune).to be_a LolClient::Static::MetaData
+      expect(item.special_recipe).to be_nil
+      expect(item.stacks).to eq 1
+      expect(item.stats).to be_a LolClient::Static::BasicDataStats
+      expect(item.tags).to be_nil
     end
   end
 
   describe '#static_item' do
-    let(:item) { VCR.use_cassette('static_item') { subject.static_item(item_id, item_data: 'all') } }
+    let(:item) { VCR.use_cassette('static_item') { subject.static_item(item_id, data: 'all') } }
     let(:item_id) { 2009 }
 
-    it_behaves_like 'a static item'
+    it 'returns an item' do
+      expect(item).to be_a LolClient::Static::Item
+    end
+
+    it 'matches the response data' do
+      expect(item.colloq).to eq ';'
+      expect(item.consume_on_full).to be_nil
+      expect(item.consumed).to be_true
+      expect(item.depth).to be_nil
+      expect(item.description).to eq '<consumable>Click to Consume:</consumable> Restores 80 Health and 50 Mana over 10 seconds.'
+      expect(item.from).to be_nil
+      expect(item.gold).to be_a LolClient::Static::Gold
+      expect(item.group).to be_nil
+      expect(item.hide_from_all).to be_nil
+      expect(item.image).to be_a LolClient::Static::Image
+      expect(item.in_store).to be_nil
+      expect(item.into).to be_nil
+      expect(item.maps).to be_nil
+      expect(item.name).to eq 'Total Biscuit of Rejuvenation'
+      expect(item.plain_text).to be_nil
+      expect(item.required_champion).to be_nil
+      expect(item.rune).to be_nil
+      expect(item.special_recipe).to be_nil
+      expect(item.stacks).to be_nil
+      expect(item.stats).to be_a LolClient::Static::BasicDataStats
+      expect(item.tags).to be_nil
+    end
   end
 
   describe '#static_masteries' do
-    let(:masteries) { VCR.use_cassette('static_masteries') { subject.static_masteries(mastery_data: 'all') } }
+    let(:masteries) { VCR.use_cassette('static_masteries') { subject.static_masteries(data: 'all') } }
 
     it 'returns a hash of masteries' do
       expect(masteries).to be_a_hash_of LolClient::Static::Mastery
@@ -316,14 +363,14 @@ describe LolClient do
   end
 
   describe '#static_mastery' do
-    let(:mastery) { VCR.use_cassette('static_mastery') { subject.static_mastery(mastery_id, mastery_data: 'all') } }
+    let(:mastery) { VCR.use_cassette('static_mastery') { subject.static_mastery(mastery_id, data: 'all') } }
     let(:mastery_id) { 4353 }
 
     it_behaves_like 'a static mastery'
   end
 
   describe '#static_runes' do
-    let(:runes) { VCR.use_cassette('static_runes') { subject.static_runes(rune_data: 'all') } }
+    let(:runes) { VCR.use_cassette('static_runes') { subject.static_runes(data: 'all') } }
 
     it 'returns a hash of runes' do
       expect(runes).to be_a_hash_of LolClient::Static::Rune
@@ -331,22 +378,67 @@ describe LolClient do
 
     it 'matches the response data' do
       expect(runes).to have(296).items
-    end
 
-    it_behaves_like 'a static rune' do
-      let(:rune) { runes['5235'] }
+      rune = runes['5235']
+      expect(rune.colloq).to eq ';'
+      expect(rune.consume_on_full).to be_false
+      expect(rune.consumed).to be_false
+      expect(rune.depth).to eq 1
+      expect(rune.description).to eq '+3.85 ability power'
+      expect(rune.from).to be_nil
+      expect(rune.gold).to be_a LolClient::Static::Gold
+      expect(rune.group).to be_nil
+      expect(rune.hide_from_all).to be_false
+      expect(rune.image).to be_a LolClient::Static::Image
+      expect(rune.in_store).to be_false
+      expect(rune.into).to be_nil
+      expect(rune.maps).to eq({'10' => true, '1' => true, '8' => true, '12' => true})
+      expect(rune.name).to eq 'Quintessence of Ability Power'
+      expect(rune.plain_text).to be_nil
+      expect(rune.required_champion).to be_nil
+      expect(rune.rune).to be_a LolClient::Static::MetaData
+      expect(rune.special_recipe).to eq 0
+      expect(rune.stacks).to eq 1
+      expect(rune.stats).to be_a LolClient::Static::BasicDataStats
+      expect(rune.tags).to eq %w[magic flat quintessence]
     end
   end
 
   describe '#static_rune' do
-    let(:rune) { VCR.use_cassette('static_rune') { subject.static_rune(rune_id, rune_data: 'all') } }
+    let(:rune) { VCR.use_cassette('static_rune') { subject.static_rune(rune_id, data: 'all') } }
     let(:rune_id) { 5235 }
 
-    it_behaves_like 'a static rune'
+    it 'returns a rune' do
+      expect(rune).to be_a LolClient::Static::Rune
+    end
+
+    it 'matches the response data' do
+      expect(rune.colloq).to be_nil
+      expect(rune.consume_on_full).to be_false
+      expect(rune.consumed).to be_false
+      expect(rune.depth).to be_nil
+      expect(rune.description).to eq '+3.85 ability power'
+      expect(rune.from).to be_nil
+      expect(rune.gold).to be_nil
+      expect(rune.group).to be_nil
+      expect(rune.hide_from_all).to be_nil
+      expect(rune.image).to be_a LolClient::Static::Image
+      expect(rune.in_store).to be_nil
+      expect(rune.into).to be_nil
+      expect(rune.maps).to be_nil
+      expect(rune.name).to eq 'Quintessence of Ability Power'
+      expect(rune.plain_text).to be_nil
+      expect(rune.required_champion).to be_nil
+      expect(rune.rune).to be_a LolClient::Static::MetaData
+      expect(rune.special_recipe).to be_nil
+      expect(rune.stacks).to be_nil
+      expect(rune.stats).to be_a LolClient::Static::BasicDataStats
+      expect(rune.tags).to eq %w[magic flat quintessence]
+    end
   end
 
   describe '#static_spells' do
-    let(:spells) { VCR.use_cassette('static_spells') { subject.static_spells(spell_data: 'all') } }
+    let(:spells) { VCR.use_cassette('static_spells') { subject.static_spells(data: 'all') } }
 
     it 'returns a hash of spells' do
       expect(spells).to be_a_hash_of LolClient::Static::SummonerSpell
@@ -362,7 +454,7 @@ describe LolClient do
   end
 
   describe '#static_spell' do
-    let(:spell) { VCR.use_cassette('static_spell') { subject.static_spell(spell_id, spell_data: 'all') } }
+    let(:spell) { VCR.use_cassette('static_spell') { subject.static_spell(spell_id, data: 'all') } }
     let(:spell_id) { 'SummonerBarrier' }
 
     it_behaves_like 'a static summoner spell'

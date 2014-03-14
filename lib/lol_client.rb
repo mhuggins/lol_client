@@ -4,12 +4,30 @@ require 'lol_client/version'
 
 require 'cgi'
 require 'json'
+require 'ostruct'
 require 'rest-client'
 require 'set'
 
 class LolClient
   REGIONS = [:br, :eune, :euw, :kr, :lan, :las, :na, :oce, :ru, :tr].to_set.freeze
+
   CHALLENGER_LEAGUE_TYPES = [:RANKED_SOLO_5x5, :RANKED_TEAM_3x3, :RANKED_TEAM_5x5].to_set.freeze
+
+  STATIC_CHAMPION_DATA_OPTIONS = %w[all image skins lore blurb allytips enemytips
+                                    tags partype info stats spells passive
+                                    recommended].to_set.freeze
+
+  STATIC_ITEM_DATA_OPTIONS = %w[all gold calloq consumed stacks depth consumeOnFull
+                                from into specialRecipe inStore hideFromAll
+                                requiredChampion tags maps image stats].to_set.freeze
+
+  STATIC_MASTERY_DATA_OPTIONS = %w[all image prereq ranks tree].to_set.freeze
+
+  STATIC_RUNE_DATA_OPTIONS = %w[all image prereq ranks tree"].to_set.freeze
+
+  STATIC_SPELL_DATA_OPTIONS = %w[all tooltip leveltip image resource maxrank cost
+                                 costType costBurn cooldown cooldownBurn effect
+                                 effectBurn vars range rangeBurn key modes].to_set.freeze
 
   ##
   # Stores the region associated with the client.
@@ -26,7 +44,7 @@ class LolClient
   # @param region [Symbol] The region this client is associated with.  Must be
   #   one of the values defined in {REGIONS}.
   #
-  def initialize(api_key, region = :na)
+  def initialize(api_key, region: :na)
     @api_key = api_key
     @region = region
 
@@ -203,17 +221,17 @@ class LolClient
   # @param locale [String] The locale to use for champion data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for champion data.
-  # @param champ_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "image", "skins", "lore", "blurb",
-  #   "allytips", "enemytips", "tags", "partype", "info", "stats", "spells",
-  #   "passive", and "recommended".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   include values defined in {STATIC_CHAMPION_DATA_OPTIONS}.
   #
   # @return [Hash] The {Static::Champion} objects, where each key is a string
   #   representing the champion's id.
   #
-  def static_champions(locale: nil, version: nil, champ_data: nil)
-    champ_data = array_options(champ_data).join(',')
-    params = params_for(locale: locale, version: version, champData: champ_data)
+  def static_champions(locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_CHAMPION_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, champData: data.join(','))
     url = url_for("static-data/#{region}/v1/champion", params)
 
     get url, Static::ChampionsRepresenter.new({})
@@ -226,16 +244,16 @@ class LolClient
   # @param locale [String] The locale to use for champion data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for champion data.
-  # @param champ_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "image", "skins", "lore", "blurb",
-  #   "allytips", "enemytips", "tags", "partype", "info", "stats", "spells",
-  #   "passive", and "recommended".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   include values defined in {STATIC_CHAMPION_DATA_OPTIONS}.
   #
   # @return [Static::Champion] The champion's data.
   #
-  def static_champion(champion_id, locale: nil, version: nil, champ_data: nil)
-    champ_data = array_options(champ_data).join(',')
-    params = params_for(locale: locale, version: version, champData: champ_data)
+  def static_champion(champion_id, locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_CHAMPION_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, champData: data.join(','))
     url = url_for("static-data/#{region}/v1/champion/#{champion_id}", params)
 
     get url, Static::ChampionRepresenter.new(Static::Champion.new)
@@ -247,20 +265,20 @@ class LolClient
   # @param locale [String] The locale to use for item data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for item data.
-  # @param item_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "gold", "calloq", "consumed", "stacks",
-  #   "depth", "consumeOnFull", "from", "into", "specialRecipe", "inStore",
-  #   "hideFromAll", "requiredChampion", "tags", "maps", "image", and "stats".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   include values defined in {STATIC_ITEM_DATA_OPTIONS}.
   #
   # @return [Hash] The {Static::Item} objects, where each key is a string
   #   representing the item's id.
   #
-  def static_items(locale: nil, version: nil, item_data: nil)
-    item_data = array_options(item_data).join(',')
-    params = params_for(locale: locale, version: version, itemListData: item_data)
+  def static_items(locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_ITEM_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, itemListData: data.join(','))
     url = url_for("static-data/#{region}/v1/item", params)
 
-    get url, Static::ItemsRepresenter.new({})
+    get url, Static::ItemsRepresenter.new(OpenStruct.new)
   end
 
   ##
@@ -270,16 +288,16 @@ class LolClient
   # @param locale [String] The locale to use for item data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for item data.
-  # @param item_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "gold", "calloq", "consumed", "stacks",
-  #   "depth", "consumeOnFull", "from", "into", "specialRecipe", "inStore",
-  #   "hideFromAll", "requiredChampion", "tags", "maps", "image", and "stats".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   include values defined in {STATIC_ITEM_DATA_OPTIONS}.
   #
   # @return [Static::Item] The item's data.
   #
-  def static_item(item_id, locale: nil, version: nil, item_data: nil)
-    item_data = array_options(item_data).join(',')
-    params = params_for(locale: locale, version: version, itemData: item_data)
+  def static_item(item_id, locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_ITEM_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, itemData: data.join(','))
     url = url_for("static-data/#{region}/v1/item/#{item_id}", params)
 
     get url, Static::ItemRepresenter.new(Static::Item.new)
@@ -291,15 +309,17 @@ class LolClient
   # @param locale [String] The locale to use for item data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for item data.
-  # @param item_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "image", "prereq", "ranks", and "tree".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   contain values defined in {STATIC_MASTERY_DATA_OPTIONS}.
   #
   # @return [Hash] The {Static::Mastery} objects, where each key is a string
   #   representing the mastery's id.
   #
-  def static_masteries(locale: nil, version: nil, mastery_data: nil)
-    mastery_data = array_options(mastery_data).join(',')
-    params = params_for(locale: locale, version: version, masteryListData: mastery_data)
+  def static_masteries(locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_MASTERY_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, masteryListData: data.join(','))
     url = url_for("static-data/#{region}/v1/mastery", params)
 
     get url, Static::MasteriesRepresenter.new({})
@@ -312,14 +332,16 @@ class LolClient
   # @param locale [String] The locale to use for item data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for item data.
-  # @param item_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "image", "prereq", "ranks", and "tree".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   contain values defined in {STATIC_MASTERY_DATA_OPTIONS}.
   #
   # @return [Static::Mastery] The mastery's data.
   #
-  def static_mastery(mastery_id, locale: nil, version: nil, mastery_data: nil)
-    mastery_data = array_options(mastery_data).join(',')
-    params = params_for(locale: locale, version: version, masteryData: mastery_data)
+  def static_mastery(mastery_id, locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_MASTERY_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, masteryData: data.join(','))
     url = url_for("static-data/#{region}/v1/mastery/#{mastery_id}", params)
 
     get url, Static::MasteryRepresenter.new(Static::Mastery.new)
@@ -331,21 +353,20 @@ class LolClient
   # @param locale [String] The locale to use for rune data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for rune data.
-  # @param rune_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "basic", "colloq", "consumeOnFull",
-  #   "consumed", "depth", "from", "gold", "hideFromAll", "image", "inStore",
-  #   "into", "maps", "requiredChampion", "specialRecipe", "stacks", "stats",
-  #   and "tags".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   contain values defined in {STATIC_RUNE_DATA_OPTIONS}.
   #
   # @return [Hash] The {Static::Rune} objects, where each key is a string
   #   representing the rune's id.
   #
-  def static_runes(locale: nil, version: nil, rune_data: nil)
-    rune_data = array_options(rune_data).join(',')
-    params = params_for(locale: locale, version: version, runeListData: rune_data)
+  def static_runes(locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_RUNE_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, runeListData: data.join(','))
     url = url_for("static-data/#{region}/v1/rune", params)
 
-    get url, Static::RunesRepresenter.new({})
+    get url, Static::RunesRepresenter.new(OpenStruct.new)
   end
 
   ##
@@ -355,14 +376,16 @@ class LolClient
   # @param locale [String] The locale to use for rune data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for rune data.
-  # @param rune_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "image", "prereq", "ranks", and "tree".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   contain values defined in {STATIC_RUNE_DATA_OPTIONS}.
   #
   # @return [Static::Rune] The rune's data.
   #
-  def static_rune(rune_id, locale: nil, version: nil, rune_data: nil)
-    rune_data = array_options(rune_data).join(',')
-    params = params_for(locale: locale, version: version, runeData: rune_data)
+  def static_rune(rune_id, locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_RUNE_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, runeData: data.join(','))
     url = url_for("static-data/#{region}/v1/rune/#{rune_id}", params)
 
     get url, Static::RuneRepresenter.new(Static::Rune.new)
@@ -374,18 +397,17 @@ class LolClient
   # @param locale [String] The locale to use for spell data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for spell data.
-  # @param spell_data [String, Array] The data to include in the response.
-  #   Allowed values include: "all", "tooltip", "leveltip", "image",
-  #   "resource", "maxrank", "cost", "costType", "costBurn", "cooldown",
-  #   "cooldownBurn", "effect", "effectBurn", "vars", "range", "rangeBurn",
-  #   "key", and "modes".
+  # @param data [String, Array] The data to include in the response.  May only
+  #   contain values defined in {STATIC_SPELL_DATA_OPTIONS}.
   #
   # @return [Hash] The {Static::SummonerSpell} objects, where each key is a string
   #   representing the spell's id.
   #
-  def static_spells(locale: nil, version: nil, spell_data: nil)
-    spell_data = array_options(spell_data).join(',')
-    params = params_for(locale: locale, version: version, spellData: spell_data)
+  def static_spells(locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_SPELL_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, spellData: data.join(','))
     url = url_for("static-data/#{region}/v1/summoner-spell", params)
 
     get url, Static::SummonerSpellsRepresenter.new({})
@@ -398,13 +420,16 @@ class LolClient
   # @param locale [String] The locale to use for spell data (e.g.: "en_US"
   #   or "es_ES").
   # @param version [String] The version to use for spell data.
-  # @param spell_data [String, Array] The data to include in the response.
+  # @param data [String, Array] The data to include in the response.  May only
+  #   contain values defined in {STATIC_SPELL_DATA_OPTIONS}.
   #
   # @return [Static::SummonerSpell] The spell's data.
   #
-  def static_spell(spell_id, locale: nil, version: nil, spell_data: nil)
-    spell_data = array_options(spell_data).join(',')
-    params = params_for(locale: locale, version: version, spellData: spell_data)
+  def static_spell(spell_id, locale: nil, version: nil, data: nil)
+    data = array_options(data)
+    data.each { |opt| raise ArgumentError, "invalid data option \"#{opt}\"" unless STATIC_SPELL_DATA_OPTIONS.include?(opt) }
+
+    params = params_for(locale: locale, version: version, spellData: data.join(','))
     url = url_for("static-data/#{region}/v1/summoner-spell/#{spell_id}", params)
 
     get url, Static::SummonerSpellRepresenter.new(Static::SummonerSpell.new)

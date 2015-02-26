@@ -227,6 +227,28 @@ Calling the `challenger_league` method with a league type returns a
     league.entries                                       # => [#<LolClient::LeagueEntry>, ...]
     league.entries.size                                  # => 200
 
+### Static Data
+
+#### Champions
+
+To do...
+
+#### Items
+
+To do...
+
+#### Masteries
+
+To do...
+
+#### Runes
+
+To do...
+
+#### Summoner Spells
+
+To do...
+
 ## Contributing
 
 1. Fork it
